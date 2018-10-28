@@ -123,7 +123,7 @@ try:
 
 	DecodeLog.close()
 
-except (KeyboardInterrupt, SystemExit, Exception), e:
+except (KeyboardInterrupt, SystemExit, Exception) as e:
 	print("[Error/Interruption] %s" % str(e))
 	print("Clossing TF Session...")
 	session.close()
