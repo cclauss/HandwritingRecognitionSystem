@@ -59,7 +59,7 @@ def CNNLight(X, Training, Scope):
 
 		MPool7 = max_pool(ConvLayer7, ksize=(2, 1), stride=(2, 1))
 
-		MPool7_T = tf.transpose(MPool7, perm=[0,2,1,3])
+		MPool7_T = tf.transpose(MPool7, perm=[0, 2, 1, 3])
 
 		MPool7_T_RSH = tf.reshape(MPool7_T, [-1, FV, LastFilters])
 
@@ -106,7 +106,7 @@ def CNN(X, Training, Scope):
 
 		MPool13 = max_pool(ConvLayer13, ksize=(2, 1), stride=(2, 1))
 
-		MPool13_T = tf.transpose(MPool13, perm=[0,2,1,3])
+		MPool13_T = tf.transpose(MPool13, perm=[0, 2, 1, 3])
 
 		MPool13_T_RSH = tf.reshape(MPool13_T, [-1, FV, LastFilters])
 

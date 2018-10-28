@@ -23,7 +23,7 @@ def batch_norm_conv(x, n_out, phase_train):
     with tf.variable_scope('bn'):
         beta = tf.Variable(tf.constant(0.0, shape=[n_out]), name='beta', trainable=True)
         gamma = tf.Variable(tf.constant(1.0, shape=[n_out]), name='gamma', trainable=True)
-        batch_mean, batch_var = tf.nn.moments(x, [0,1,2], name='moments')
+        batch_mean, batch_var = tf.nn.moments(x, [0, 1, 2], name='moments')
         ema = tf.train.ExponentialMovingAverage(decay=0.5)
 
         def mean_var_with_update():
@@ -172,7 +172,7 @@ def ReadData(filesLocation, filesList, numberOfFiles, WND_HEIGHT, WND_WIDTH, WND
 
 				if e > w:
 					pad = np.ones((h, (e - w)), np.uint8)*255
-					wnd = image[:h,s:w]
+					wnd = image[:h, s:w]
 					wnd = np.append(wnd, pad, axis=1)
 
 					if h < WND_HEIGHT:
@@ -188,7 +188,7 @@ def ReadData(filesLocation, filesList, numberOfFiles, WND_HEIGHT, WND_WIDTH, WND
 
 					break
 
-				wnd = image[:h,s:e]
+				wnd = image[:h, s:e]
 
 				if h < WND_HEIGHT:
 					pad = np.ones(((WND_HEIGHT - h), WND_WIDTH), np.uint8)*255

@@ -52,7 +52,7 @@ logits = RNN(Inputs, SeqLens, 'RNN_1')
 # Target params
 indices = tf.placeholder(dtype=tf.int64, shape=[None, 2])
 values = tf.placeholder(dtype=tf.int32, shape=[None])
-shape = tf.placeholder(dtype=tf.int64,shape=[2])
+shape = tf.placeholder(dtype=tf.int64, shape=[2])
 
 # Make targets
 targets = tf.SparseTensor(indices, values, shape)
@@ -251,7 +251,7 @@ try:
 
 			LogFile.write("######################################################\n\n")
 
-except (KeyboardInterrupt, SystemExit, Exception), e:
+except (KeyboardInterrupt, SystemExit, Exception) as e:
 	print("[Error/Interruption] %s\n" % str(e))
 	LogFile.write("[Error/Interruption] %s\n" % str(e))
 	LogFile.write("Clossing TF Session...\n")

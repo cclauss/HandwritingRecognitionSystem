@@ -78,27 +78,27 @@ def RNN(Inputs, SeqLens, Scope):
 			stacked_rnn_backward.append(tf.nn.rnn_cell.LSTMCell(num_units=cfg.NUnits, initializer=initializer, use_peepholes=True, state_is_tuple=True))
 		backward = tf.nn.rnn_cell.MultiRNNCell(stacked_rnn_backward, state_is_tuple=True)
 
-		[fw_out, bw_out], _ = tf.nn.bidirectional_dynamic_rnn(cell_fw=forward, cell_bw=backward, inputs=Inputs, time_major=True, dtype=tf.float32,sequence_length=tf.cast(SeqLens, tf.int64))
+		[fw_out, bw_out], _ = tf.nn.bidirectional_dynamic_rnn(cell_fw=forward, cell_bw=backward, inputs=Inputs, time_major=True, dtype=tf.float32, sequence_length=tf.cast(SeqLens, tf.int64))
 
 		# Batch normalize forward output
-		mew,var_ = tf.nn.moments(fw_out,axes=[0])
+		mew, var_ = tf.nn.moments(fw_out, axes=[0])
 		fw_out = tf.nn.batch_normalization(fw_out, mew, var_, 0.1, 1, 1e-6)
 
 		# Batch normalize backward output
-		mew,var_ = tf.nn.moments(bw_out,axes=[0])
+		mew, var_ = tf.nn.moments(bw_out, axes=[0])
 		bw_out = tf.nn.batch_normalization(bw_out, mew, var_, 0.1, 1, 1e-6)
 
 		# Reshaping forward, and backward outputs for affine transformation
-		fw_out = tf.reshape(fw_out,[-1, cfg.NUnits])
-		bw_out = tf.reshape(bw_out,[-1, cfg.NUnits])
+		fw_out = tf.reshape(fw_out, [-1, cfg.NUnits])
+		bw_out = tf.reshape(bw_out, [-1, cfg.NUnits])
 
 		# Linear Layer params
 		W_fw = tf.Variable(tf.truncated_normal(shape=[cfg.NUnits, NClasses], stddev=np.sqrt(2.0 / cfg.NUnits), dtype=tf.float32), dtype=tf.float32)
 		W_bw = tf.Variable(tf.truncated_normal(shape=[cfg.NUnits, NClasses], stddev=np.sqrt(2.0 / cfg.NUnits), dtype=tf.float32), dtype=tf.float32)
-		b_out = tf.constant(0.1,shape=[NClasses], dtype=tf.float32)
+		b_out = tf.constant(0.1, shape=[NClasses], dtype=tf.float32)
 
 		# Perform an affine transformation
-		logits =  tf.add( tf.add( tf.matmul(fw_out,W_fw), tf.matmul(bw_out,W_bw) ), b_out )
+		logits =  tf.add( tf.add( tf.matmul(fw_out, W_fw), tf.matmul(bw_out, W_bw) ), b_out )
 		
 		return tf.reshape(logits, [-1, cfg.BatchSize, NClasses])
 
